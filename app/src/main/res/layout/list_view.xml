@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#57b6b3b3"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/textViewNode"
+        style="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="left|top"
+        android:layout_marginLeft="30sp"
+        android:layout_weight="0.09"
+        android:autoText="false"
+        android:clickable="false"
+        android:editable="false"
+        android:elegantTextHeight="false"
+        android:text="@string/nodeName"
+        android:textColor="#050505"
+        android:textSize="@dimen/abc_text_size_subhead_material" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="50sp"
+        android:layout_weight="0.10"
+        android:text="@string/nodeStatus"
+        android:textAlignment="textEnd"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/abc_primary_text_material_light"
+        android:textIsSelectable="false"
+        android:textSize="@dimen/abc_text_size_small_material" />
+</LinearLayout>

@@ -5,72 +5,78 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-public class NodePollingService extends Service implements SensorUpdateInterface {
+public class BackgroundService extends Service implements SensorReadTaskCallback {
 
-    private static final String TAG = NodePollingService.class.getSimpleName();
+    private static final String TAG = BackgroundService.class.getSimpleName();
     private static final String ONLINE_NODES = "ONLINE_NODES";
     private static final int DATABASE_VERSION = 1;
 
-    IBinder mBinder = new LocalBinder();
-    PeriodicUpdateReceiver boradcastReceiver = new PeriodicUpdateReceiver();
-    PreciousServerDB onLineNodesDB;
-    UpnpScanManager upnpManager;
+    IBinder mBinder;
+    PeriodicBroadcastReceiver boradcastReceiver;
+    WeatherStationDataBase onLineWeatherStations;
     WeatherStation currentWeatherStation;
+    UpnpScanManager upnpManager;
+
 
     @Override
     public void OnUpdateComplete(WeatherStation station) {
-        System.out.println("Update completed");
+        Log.i(TAG, "Update completed");
         this.currentWeatherStation = station;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        onLineNodesDB = new PreciousServerDB(this, ONLINE_NODES, DATABASE_VERSION);
+        mBinder = new LocalBinder();
+        boradcastReceiver = new PeriodicBroadcastReceiver();
+        onLineWeatherStations = new WeatherStationDataBase(this, ONLINE_NODES, DATABASE_VERSION);
         upnpManager = new UpnpScanManager(this);
-        System.out.println("NodePolling Service Created");
+        Log.i(TAG, "Background Service Created");
     }
 
     @Override
     public IBinder onBind(Intent intent) {
+
         return mBinder;
     }
 
     public boolean onUnbind(Intent intent) {
+
         return super.onUnbind(intent);
     }
 
     @Override
     public void onDestroy() {
+
         super.onDestroy();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("This is the NodePolling Service");
         if (currentWeatherStation != null) {
-            System.out.println("CurrentWeatherStation exists");
-            ReadSensors(currentWeatherStation);
+            Log.i(TAG, "CurrentWeatherStation exists");
+            startSensorReadTask(currentWeatherStation);
         } else if (upnpManager != null)
             upnpManager.startUpnpService();
         else {
             upnpManager = new UpnpScanManager(this);
             upnpManager.startUpnpService();
         }
-        boradcastReceiver.reset(NodePollingService.this);
+        boradcastReceiver.reset(BackgroundService.this);
         return START_STICKY;
     }
 
     public void updateWeatherStations(ArrayList<WeatherStation> weatherStations) {
         if (weatherStations.size() == 0)
-            System.out.println("No weatherStations Found");
+            Log.i(TAG, "No weatherStations Found");
         else {
-            onLineNodesDB.updateTable(weatherStations);
-            currentWeatherStation = onLineNodesDB.getRelevantNode();
-            ReadSensors(currentWeatherStation);
+            onLineWeatherStations.updateTable(weatherStations);
+            currentWeatherStation = onLineWeatherStations.getRelevantNode();
+            startSensorReadTask(currentWeatherStation);
         }
     }
 
@@ -79,17 +85,16 @@ public class NodePollingService extends Service implements SensorUpdateInterface
     }
 
     public ArrayList<WeatherStation> getAllWeatherStations() {
-        return (ArrayList) onLineNodesDB.getAllStations();
+        return (ArrayList) onLineWeatherStations.getAllStations();
     }
 
-    private void ReadSensors(WeatherStation node) {
+    private void startSensorReadTask(WeatherStation node) {
         if (node.getUri() != null) {
             Uri nodeUri = Uri.parse(node.getUri());
-            ReadTaskParameters taskParameters = new ReadTaskParameters(nodeUri, this);
             SensorReadTask sensorReadTask = new SensorReadTask(this);
-            sensorReadTask.execute(taskParameters);
+            sensorReadTask.execute(nodeUri);
         } else
-            System.out.println("currentweatherstation uri == null");
+            Log.i(TAG, "CurrentWeatherStation uri == null");
     }
 
     public void StopSensingService() {
@@ -97,8 +102,8 @@ public class NodePollingService extends Service implements SensorUpdateInterface
     }
 
     public class LocalBinder extends Binder {
-        public NodePollingService getService() {
-            return NodePollingService.this;
+        public BackgroundService getService() {
+            return BackgroundService.this;
         }
     }
 }

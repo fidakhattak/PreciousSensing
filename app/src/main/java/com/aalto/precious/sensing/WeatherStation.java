@@ -10,27 +10,24 @@ public class WeatherStation {
 
     ArrayList<Sensor> sensors = new ArrayList<Sensor>();
     private String location;
-    private String friendly_name;
     private String uri;
 
     public WeatherStation() {
     }
 
     public WeatherStation(String friendly_name) {
+
         location = getLocationFromName(friendly_name);
     }
 
     public WeatherStation(String friendly_name, String uri) {
-        this.friendly_name = friendly_name;
+
         this.uri = uri;
         location = getLocationFromName(friendly_name);
     }
 
-    public ArrayList<Sensor> getSensorList() {
-        return sensors;
-    }
-
     private String getLocationFromName(String friendly_name) {
+
         String parts[];
         if (friendly_name.contains(":")) {
             parts = friendly_name.split(":");
@@ -39,35 +36,39 @@ public class WeatherStation {
         return friendly_name;
     }
 
+    public ArrayList<Sensor> getSensorList() {
+        return sensors;
+    }
+
     public String getUri() {
+
         return this.uri;
     }
 
     public void setUri(String uri) {
+
         this.uri = uri;
     }
 
     public String getLocation() {
+
         return this.location;
     }
 
     public void setLocation(String location) {
+
         this.location = location;
     }
 
     public void addSensor(Sensor sensor) {
+
         this.sensors.add(sensor);
     }
 
     public Sensor getNewSensor() {
+
         return new Sensor();
     }
-
-/*
- private getLocationFromName() {
-
- }
- */
 
     public Sensor getSensor(String name) {
 
@@ -79,7 +80,6 @@ public class WeatherStation {
         }
         return null;
     }
-
 
     public boolean hasTemp() {
 

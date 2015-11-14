@@ -1,34 +1,31 @@
 package com.aalto.precious.sensing;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.IOException;
 
 /**
  * Created by fida on 6.11.2015.
  */
-public class SensorReadTask extends AsyncTask<ReadTaskParameters, Void, Void> {
-    WeatherStation station = null;
-    Uri uri;
-    Communicator communicator;
-    Context context;
-    SensorUpdateInterface updateCompleted;
+public class SensorReadTask extends AsyncTask<Uri, Void, Void> {
+    private static String TAG = "SENSOR_READ_TASK";
+    private WeatherStation station = null;
+    private Uri uri;
+    private Communicator communicator;
+    private SensorReadTaskCallback updateCompleted;
 
-    public SensorReadTask(SensorUpdateInterface activityContext) {
+    public SensorReadTask(SensorReadTaskCallback activityContext) {
         this.updateCompleted = activityContext;
     }
 
-    protected Void doInBackground(ReadTaskParameters... taskParameters) {
+    protected Void doInBackground(Uri... taskParameters) {
         try {
-            this.uri = taskParameters[0].uri;
-            this.context = taskParameters[0].context;
-            System.out.println("Background Started");
-
+            this.uri = taskParameters[0];
             String address = uri.getHost();
             int port = uri.getPort();
-            System.out.println("Address: " + address + " port: " + port);
+            Log.i(TAG, "Address: " + address + " port: " + port);
             this.communicator = new Communicator();
             SensorRead();
         } catch (IOException e) {
@@ -65,7 +62,7 @@ public class SensorReadTask extends AsyncTask<ReadTaskParameters, Void, Void> {
 
         station = this.communicator.getWeatherStation();
         if (station == null)
-            System.out.println("ReadSensor couldn't parse a node");
+            Log.i(TAG, "ReadSensor couldn't parse a node");
     }
 
 }

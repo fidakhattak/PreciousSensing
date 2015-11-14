@@ -1,6 +1,7 @@
 package com.aalto.precious.sensing;
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.xml.sax.SAXException;
 
@@ -17,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by fida on 6.11.2015.
  */
 public class Communicator {
+    private static String TAG = "COMMUNICATOR";
     private String uri;
     private Socket socket;
     private PrintWriter out;
@@ -24,16 +26,15 @@ public class Communicator {
     private String stringResponse;
     private WeatherStation station;
 
-
     public boolean connect(Uri uri) throws IOException {
 
         this.uri = String.valueOf(uri);
         Socket socket = createConnection(uri.getHost(), uri.getPort());
 
         if (socket == null) {
-            System.err.println("Could not connect to " + uri.getHost() + " : " + uri.getPort());
-            System.err.println("Could not connect to " + uri.getHost() + " : " + uri.getPort());
-            System.err.println("Sensor Communicate Operation Failed: Returning 0");
+            Log.i(TAG, "Could not connect to " + uri.getHost() + " : " + uri.getPort());
+            Log.i(TAG, "Could not connect to " + uri.getHost() + " : " + uri.getPort());
+            Log.i(TAG, "Sensor Communicate Operation Failed: Returning 0");
             return false;
         }
         this.socket = socket;
@@ -72,7 +73,7 @@ public class Communicator {
             station = response.parseStringResponse(stringResponse);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             // TODO Auto-generated catch block
-            System.err.println("Error Parsing the response" + e.getMessage());
+            Log.i(TAG, "Error Parsing the response" + e.getMessage());
             return false;
         }
         if (station == null) {
@@ -105,10 +106,10 @@ public class Communicator {
         try {
             socket = new Socket(address, port);
         } catch (UnknownHostException e) {
-            System.err.println("Don't know about host: " + address);
+            Log.i(TAG, "Don't know about host: " + address);
             return null;
         } catch (IOException e) {
-            System.err.println("Couldn't get I/O for "
+            Log.i(TAG, "Couldn't get I/O for "
                     + "the connection to: " + address + e.getMessage());
             return null;
         }

@@ -12,9 +12,10 @@ import java.util.ArrayList;
 /**
  * Created by fida on 24.10.2015.
  */
-public class ViewListAdapter extends ArrayAdapter {
 
-    public ViewListAdapter(Context context, ArrayList<WeatherStation> items) {
+public class WeatherStationListAdapter extends ArrayAdapter {
+
+    public WeatherStationListAdapter(Context context, ArrayList<WeatherStation> items) {
         super(context, 0, items);
     }
 

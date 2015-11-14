@@ -32,7 +32,6 @@ public class SensorListAdapter extends ArrayAdapter {
         ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar);
         TextView sensorValue = (TextView) convertView.findViewById(R.id.sensorValue);
         TextView sensorUnit = (TextView) convertView.findViewById(R.id.sensorUnit);
-
         // Populate the data into the template view using the data object
         // Return the completed view to render on screen
         sensorName.setText(item.getName());

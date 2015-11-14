@@ -4,28 +4,32 @@ package com.aalto.precious.sensing;
  * Created by fida on 6.11.2015.
  */
 public class Sensor {
-    String name;
-    float sensorValue;
-    float maxThreshold;
-    float minThreshold;
-    String sampleTime;
-    String stringSensorValue;
-    String unit;
-    int progressBarValue;
+    private String name;
+    private String sampleTime;
+    private String stringSensorValue;
+    private String unit;
+    private float sensorValue;
+    private float maxThreshold;
+    private float minThreshold;
+    private int progressBarValue;
 
     public int getProgressBarValue() {
+
         return progressBarValue;
     }
 
     public String getStringSensorValue() {
+
         return stringSensorValue;
     }
 
     public String getUnit() {
+
         return unit;
     }
 
     public String getName() {
+
         return name;
     }
 
@@ -40,10 +44,12 @@ public class Sensor {
     }
 
     public void setSensorValue(float sensorValue) {
+
         this.sensorValue = sensorValue;
     }
 
     public float getMaxThreshold() {
+
         return maxThreshold;
     }
 
@@ -90,7 +96,7 @@ public class Sensor {
             if (this.sensorValue > 400) {
                 this.stringSensorValue = "Bright";
             } else if (this.sensorValue < 400 && this.sensorValue > 100) {
-                this.stringSensorValue = "Medium Light";
+                this.stringSensorValue = "Medium";
             } else if (this.sensorValue < 100) {
                 this.stringSensorValue = "Dark";
             }

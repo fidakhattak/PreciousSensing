@@ -1,5 +1,7 @@
 package com.aalto.precious.sensing;
 
+import android.util.Log;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -18,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
  * Created by fida on 6.11.2015.
  */
 public class Response {
+    private static String TAG = "RESPONSE";
     private String stringResponse;
 
     public void setStringResponse(String response) {
@@ -27,18 +30,17 @@ public class Response {
     public WeatherStation parseStringResponse(String stringResponse) throws ParserConfigurationException, SAXException, IOException {
         if (this.stringResponse == null) {
             if (this.stringResponse.length() == 0)
-                System.err.print("No stringResponse Set");
+                Log.e(TAG, "No stringResponse Set");
             return null;
         }
         System.err.println(this.stringResponse);
         Document document = openDocument(this.stringResponse);
-//		System.out.println("document opened");
         WeatherStation weatherStation = parseDocument(document);
         if (weatherStation == null) {
-            System.out.println("Error parsing document");
+            Log.i(TAG, "Error parsing document");
             return null;
         }
-        System.out.println("got precious node");
+        Log.i(TAG, "got precious node");
         return weatherStation;
     }
 
@@ -54,9 +56,9 @@ public class Response {
     public WeatherStation parseDocument(Document document) {
         Element element = document.getDocumentElement();
         String location = element.getAttribute("location");
-//		System.out.println("location is "+ location);
+//		Log.i(TAG,"location is "+ location);
         if (location.length() == 0) {
-            System.out.println("No location specified");
+            Log.i(TAG, "No location specified");
             element.setAttribute("location", "Unkown Node");
         }
 
@@ -94,9 +96,9 @@ public class Response {
                 //add to the list of sensors in weatherstation
                 station.addSensor(sensor);
 
-//				System.out.println("Added sensor" +sensor.name);
+//				Log.i(TAG,"Added sensor" +sensor.name);
 //
-//				System.out.println("name ==" + name +"sensorValue==" +sensorValue +" minThreshold"
+//				Log.i(TAG,"name ==" + name +"sensorValue==" +sensorValue +" minThreshold"
 //						+minThreshold +"maxThreshold == " +maxThreshold );
             }
         }

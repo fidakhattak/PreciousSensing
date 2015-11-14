@@ -30,12 +30,12 @@
 
         <service android:name="org.teleal.cling.android.AndroidUpnpServiceImpl" />
         <service
-            android:name=".NodePollingService"
+            android:name=".BackgroundService"
             android:enabled="true"
             android:exported="true"></service>
 
         <receiver
-            android:name=".PeriodicUpdateReceiver"
+            android:name=".PeriodicBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

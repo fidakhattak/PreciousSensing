@@ -18,7 +18,7 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = "MainActivity";
     boolean mbound = false;
-    private NodePollingService nodePollingService;
+    private BackgroundService backgroundService;
 
     protected ServiceConnection serviceConnection = new ServiceConnection() {
 
@@ -26,9 +26,9 @@ public class MainActivity extends ActionBarActivity {
         public void onServiceConnected(ComponentName name, IBinder service) {
             mbound = true;
 
-            NodePollingService.LocalBinder binder = (NodePollingService.LocalBinder) service;
-            nodePollingService = binder.getService();
-            ArrayList<WeatherStation> serverList = nodePollingService.getAllWeatherStations();
+            BackgroundService.LocalBinder binder = (BackgroundService.LocalBinder) service;
+            backgroundService = binder.getService();
+            ArrayList<WeatherStation> serverList = backgroundService.getAllWeatherStations();
 
             for (int i = 0; i < serverList.size(); i++) {
                 System.out.println(serverList.get(i).getLocation());
@@ -54,8 +54,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        Intent pollingService = new Intent(getApplicationContext(), NodePollingService.class);
-        if (!isMyServiceRunning(NodePollingService.class))
+        Intent pollingService = new Intent(getApplicationContext(), BackgroundService.class);
+        if (!isMyServiceRunning(BackgroundService.class))
             startService(pollingService);
         bindService(pollingService, serviceConnection, BIND_AUTO_CREATE);
     }
@@ -83,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void displayNodes(Context context, ArrayList<WeatherStation> onlineServerList) {
         try {
-            ViewListAdapter adapter = new ViewListAdapter(context, onlineServerList);
+            WeatherStationListAdapter adapter = new WeatherStationListAdapter(context, onlineServerList);
             ListView listView = (ListView) findViewById(R.id.list);
             listView.setAdapter(adapter);
             setLisViewItemListener(listView);

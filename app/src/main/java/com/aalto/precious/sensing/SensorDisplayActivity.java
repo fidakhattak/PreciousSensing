@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class SensorDisplayActivity extends Activity {
 
     private static final String TAG = "Sensor Display Activity";
-    private static NodePollingService nodePollingService;
+    private static BackgroundService backgroundService;
     private boolean mbound = false;
     private int mInterval = 5000;
     private Handler mHandler;
@@ -37,8 +38,8 @@ public class SensorDisplayActivity extends Activity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mbound = true;
-            NodePollingService.LocalBinder binder = (NodePollingService.LocalBinder) service;
-            nodePollingService = binder.getService();
+            BackgroundService.LocalBinder binder = (BackgroundService.LocalBinder) service;
+            backgroundService = binder.getService();
             startRepeatingTask();
         }
 
@@ -61,8 +62,8 @@ public class SensorDisplayActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        Intent pollingService = new Intent(getApplicationContext(), NodePollingService.class);
-        if (!isMyServiceRunning(NodePollingService.class))
+        Intent pollingService = new Intent(getApplicationContext(), BackgroundService.class);
+        if (!isMyServiceRunning(BackgroundService.class))
             startService(pollingService);
         bindService(pollingService, serviceConnection, BIND_AUTO_CREATE);
     }
@@ -75,18 +76,22 @@ public class SensorDisplayActivity extends Activity {
 
     @Override
     protected void onPause() {
+
         super.onPause();
     }
 
     void startRepeatingTask() {
+
         mStatusChecker.run();
     }
 
     void stopRepeatingTask() {
+
         mHandler.removeCallbacks(mStatusChecker);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
+
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
@@ -97,7 +102,8 @@ public class SensorDisplayActivity extends Activity {
     }
 
     private void displaySensors() {
-        currentWeatherStation = nodePollingService.getCurrentWeatherStation();
+
+        currentWeatherStation = backgroundService.getCurrentWeatherStation();
         if (currentWeatherStation != null) {
             ArrayList<Sensor> sensors = currentWeatherStation.getSensorList();
             if (sensors.size() != 0) {
@@ -109,10 +115,10 @@ public class SensorDisplayActivity extends Activity {
                     listView.setAdapter(adapter);
                     registerForContextMenu(listView);
                 } catch (NullPointerException e) {
-                    System.out.println(e.toString());
+                    Log.i(TAG, e.toString());
                 }
             } else
-                System.out.println("No Sensors Found");
+                Log.i(TAG, "No Sensors Found");
         }
     }
 }

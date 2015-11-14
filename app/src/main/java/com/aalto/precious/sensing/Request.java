@@ -4,9 +4,10 @@ package com.aalto.precious.sensing;
  * Created by fida on 6.11.2015.
  */
 public class Request {
-    RequestType requestType;
-    SensorType sensorType;
-    ValueType valueType;
+    private RequestType requestType;
+    private SensorType sensorType;
+    private ValueType valueType;
+
 
     public Request() {
         this.requestType = RequestType.DEFAULT;

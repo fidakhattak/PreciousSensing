@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 
 import org.teleal.cling.android.AndroidUpnpService;
 import org.teleal.cling.android.AndroidUpnpServiceImpl;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
  * Created by fida on 4.11.2015.
  */
 public class UpnpScanManager {
-    Context context;
-    AndroidUpnpService upnpService;
-    UpnpRegistryListener registryListener = new UpnpRegistryListener();
-    ServiceConnection serviceConnection;
+    private static String TAG = "UPNP_SCAN_MANAGER";
+    private Context context;
+    private AndroidUpnpService upnpService;
+    private ServiceConnection serviceConnection;
+    private UpnpRegistryListener registryListener;
 
     public UpnpScanManager(Context context) {
         this.context = context;
+        this.registryListener = new UpnpRegistryListener();
     }
 
     public boolean startUpnpService() {
@@ -65,19 +68,19 @@ public class UpnpScanManager {
                 weatherStationList.add(node);
             }
         }
-        NodePollingService pollingService = (NodePollingService) context;
+        BackgroundService pollingService = (BackgroundService) context;
         pollingService.updateWeatherStations(weatherStationList);
     }
 
     private WeatherStation isNodePrecious(Device device) {
         String friendlyName = device.getDetails().getFriendlyName();
-        String uri;
+
         String searchString = "PRECIOUS";
         WeatherStation node = null;
         if (friendlyName.toLowerCase().contains(searchString.toLowerCase())) {
-            uri = device.getDetails().getPresentationURI().toString();
-            System.out.println("The node is Precious");
-            System.out.println("URI is " + uri);
+            String uri = device.getDetails().getPresentationURI().toString();
+            Log.i(TAG, "The node is Precious");
+            Log.i(TAG, "URI is " + uri);
             node = new WeatherStation(friendlyName, uri);
         }
         return node;

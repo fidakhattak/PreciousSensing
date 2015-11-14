@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by fida on 5.11.2015.
  */
-public class PreciousServerDB extends SQLiteOpenHelper {
+public class WeatherStationDataBase extends SQLiteOpenHelper {
 
     /**
      * CRUD operations (create "add", read "get", update, delete) node + get all nodes + delete all nodes
@@ -29,7 +29,7 @@ public class PreciousServerDB extends SQLiteOpenHelper {
     //private static final String[] COLUMNS = {KEY_ID, KEY_LOCATION, KEY_URI};
     //private static final String[] COLUMNS = {KEY_LOCATION, KEY_URI};
 
-    public PreciousServerDB(Context context, String databaseName, int databaseVersion) {
+    public WeatherStationDataBase(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
     }
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="#676767"
     android:orientation="vertical"
     android:padding="20dp"
     android:weightSum="1">
@@ -15,10 +16,13 @@
 
     <ListView
         android:id="@+id/SensorLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="456dp"
-        android:layout_marginTop="51dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:choiceMode="singleChoice"
         android:clickable="true"
-        android:divider="#0d0d0d" />
+        android:divider="#0d0d0d"
+        android:dividerHeight="0.5dp" />
+    android:scrollbars="vertical"
+    android:smoothScrollbar="true" />
 </LinearLayout>

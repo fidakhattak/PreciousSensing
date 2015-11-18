@@ -26,8 +26,8 @@ public class UpnpRegistryListener extends DefaultRegistryListener {
         URI uri;
         if (name.toLowerCase().contains(PRECIOUS_NAME.toLowerCase())) {
             uri = device.getDetails().getPresentationURI();
-            System.out.println("The node is Precious");
-            System.out.println("URI is " + uri.toString());
+            Log.i(TAG, "The node is Precious");
+            Log.i(TAG, "URI is " + uri.toString());
             AddToList(device);
         }
     }

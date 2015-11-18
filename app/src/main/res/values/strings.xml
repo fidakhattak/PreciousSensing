@@ -12,4 +12,5 @@
     <string name="sensorDisplayString">Sensor</string>
     <string name="defaultUnit">Unit</string>
     <string name="location"></string>
+    <string name="wsActivityStatus">Status</string>
 </resources>

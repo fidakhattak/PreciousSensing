@@ -14,20 +14,49 @@
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ActivityBanner"
-        android:layout_marginTop="51dp"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="100sp"
         android:choiceMode="singleChoice"
         android:clickable="true"
-        android:divider="#0d0d0d" />
+        android:divider="#0d0d0d"
+        android:scrollbars="vertical" />
 
     <TextView
         android:id="@+id/ActivityBanner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:layout_alignEnd="@+id/list"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/list"
+        android:autoText="false"
+        android:phoneNumber="false"
         android:text="@string/wsActivityBanner"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/statusTextView"
+        android:layout_width="fill_parent"
+        android:layout_height="50sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ActivityBanner"
+        android:paddingTop="20dp"
+        android:text="@string/wsActivityStatus"
+        android:textAlignment="center"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="fill_parent"
+        android:layout_height="1sp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/statusTextView"
+        android:background="@android:color/darker_gray"
+        android:visibility="visible" />
+
 
 </RelativeLayout>

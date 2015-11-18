@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -54,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onStart() {
         super.onStart();
 
-        Intent pollingService = new Intent(getApplicationContext(), BackgroundService.class);
+        Intent pollingService = new Intent(this, BackgroundService.class);
         if (!isMyServiceRunning(BackgroundService.class))
             startService(pollingService);
         bindService(pollingService, serviceConnection, BIND_AUTO_CREATE);
@@ -84,7 +85,15 @@ public class MainActivity extends ActionBarActivity {
     private void displayNodes(Context context, ArrayList<WeatherStation> onlineServerList) {
         try {
             WeatherStationListAdapter adapter = new WeatherStationListAdapter(context, onlineServerList);
+            TextView activityStatus = (TextView) findViewById(R.id.statusTextView);
+
+            if (onlineServerList.size() < 1)
+                activityStatus.setText(" No Weather Station Found");
+            else
+                activityStatus.setVisibility(View.INVISIBLE);
+
             ListView listView = (ListView) findViewById(R.id.list);
+
             listView.setAdapter(adapter);
             setLisViewItemListener(listView);
             registerForContextMenu(listView);
@@ -100,6 +109,7 @@ public class MainActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
                 WeatherStation serverNode = (WeatherStation) adapter.getItemAtPosition(position);
                 Intent intent = new Intent(getApplicationContext(), SensorDisplayActivity.class);
+                intent.putExtra("uri", serverNode.getUri());
                 //based on item add info to intent
                 startActivity(intent);
             }

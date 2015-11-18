@@ -26,11 +26,11 @@ public class SensorDisplayActivity extends Activity {
     private int mInterval = 5000;
     private Handler mHandler;
     private WeatherStation currentWeatherStation;
-    Runnable mStatusChecker = new Runnable() {
+    Runnable showOnScreen = new Runnable() {
         @Override
         public void run() {
             displaySensors(); //this function can change value of mInterval.
-            mHandler.postDelayed(mStatusChecker, mInterval);
+            mHandler.postDelayed(showOnScreen, mInterval);
         }
     };
     protected ServiceConnection serviceConnection = new ServiceConnection() {
@@ -82,12 +82,12 @@ public class SensorDisplayActivity extends Activity {
 
     void startRepeatingTask() {
 
-        mStatusChecker.run();
+        showOnScreen.run();
     }
 
     void stopRepeatingTask() {
 
-        mHandler.removeCallbacks(mStatusChecker);
+        mHandler.removeCallbacks(showOnScreen);
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
@@ -102,7 +102,7 @@ public class SensorDisplayActivity extends Activity {
     }
 
     private void displaySensors() {
-
+        //      String uri = getIntent().getStringExtra("uri");
         currentWeatherStation = backgroundService.getCurrentWeatherStation();
         if (currentWeatherStation != null) {
             ArrayList<Sensor> sensors = currentWeatherStation.getSensorList();

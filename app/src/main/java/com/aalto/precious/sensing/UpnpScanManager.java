@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by fida on 4.11.2015.
  */
+
 public class UpnpScanManager {
     private static String TAG = "UPNP_SCAN_MANAGER";
     private Context context;
@@ -29,10 +30,21 @@ public class UpnpScanManager {
         this.registryListener = new UpnpRegistryListener();
     }
 
-    public boolean startUpnpService() {
+    public boolean startScan() {
         StartServiceConnection();
         doBind();
         return false;
+    }
+
+    public void stopScan() {
+        if (upnpService != null) {
+            boolean isBound;
+            isBound = context.bindService(new Intent(context, AndroidUpnpServiceImpl.class), serviceConnection, Context.BIND_AUTO_CREATE);
+            if (isBound) {
+                upnpService.getRegistry().removeListener(registryListener);
+                context.unbindService(serviceConnection);
+            }
+        }
     }
 
     private void StartServiceConnection() {
@@ -49,17 +61,17 @@ public class UpnpScanManager {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                updateWeatherStationList(upnpService.getRegistry());
-                //  StopBowsing();
+                updateStationList(upnpService.getRegistry());
+                //  stopScan();
             }
 
             public void onServiceDisconnected(ComponentName className) {
-                StopBowsing();
+                stopScan();
             }
         };
     }
 
-    private void updateWeatherStationList(Registry registry) {
+    private void updateStationList(Registry registry) {
         WeatherStation node;
         ArrayList<WeatherStation> weatherStationList = new ArrayList<WeatherStation>();
         for (Device device : registry.getDevices()) {
@@ -69,12 +81,11 @@ public class UpnpScanManager {
             }
         }
         BackgroundService pollingService = (BackgroundService) context;
-        pollingService.updateWeatherStations(weatherStationList);
+        pollingService.upnpScanUpdate(weatherStationList);
     }
 
     private WeatherStation isNodePrecious(Device device) {
         String friendlyName = device.getDetails().getFriendlyName();
-
         String searchString = "PRECIOUS";
         WeatherStation node = null;
         if (friendlyName.toLowerCase().contains(searchString.toLowerCase())) {
@@ -94,14 +105,5 @@ public class UpnpScanManager {
                 Context.BIND_AUTO_CREATE
         );
     }
-
-    public void StopBowsing() {
-        if (upnpService != null) {
-            upnpService.getRegistry().removeListener(registryListener);
-        }
-        context.unbindService(serviceConnection);
-    }
-
-
 }
 

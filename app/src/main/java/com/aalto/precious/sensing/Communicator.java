@@ -101,7 +101,7 @@ public class Communicator {
 
     private Socket createConnection(String address, int port) {
 
-        System.out.println("Attemping to connect to host " +
+        Log.i(TAG, "Attemping to connect to host " +
                 address + " on port " + port);
         try {
             socket = new Socket(address, port);
@@ -117,7 +117,7 @@ public class Communicator {
     }
 
     public WeatherStation getWeatherStation() {
-        System.out.println("Communicator returning the node");
+        Log.i(TAG, "Communicator returning the node");
         return station;
     }
 }

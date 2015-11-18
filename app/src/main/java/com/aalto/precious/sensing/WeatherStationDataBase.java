@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +63,6 @@ public class WeatherStationDataBase extends SQLiteOpenHelper {
     }
 
     public void addNode(WeatherStation station) {
-        Log.d("addNode", station.toString());
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();
         // 2. create ContentValues to add key "column"/value
@@ -110,8 +108,6 @@ public class WeatherStationDataBase extends SQLiteOpenHelper {
                 weatherStations.add(newNode);
             } while (cursor.moveToNext());
         }
-
-        Log.d("getAllStations()", weatherStations.toString());
         cursor.close();
         // return preciousServerNodes
         return weatherStations;

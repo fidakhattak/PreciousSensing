@@ -33,7 +33,7 @@ public class Response {
                 Log.e(TAG, "No stringResponse Set");
             return null;
         }
-        System.err.println(this.stringResponse);
+        Log.i(TAG, this.stringResponse);
         Document document = openDocument(this.stringResponse);
         WeatherStation weatherStation = parseDocument(document);
         if (weatherStation == null) {

@@ -11,31 +11,38 @@ import android.util.Log;
 public class PeriodicBroadcastReceiver extends BroadcastReceiver {
 
     private static final String TAG = "BroadcastReceiver";
-    private static final String INTENT_ACTION = "com.aalto.precious.sensing.PERIODIC_UPDATE_TASK";
-
+    //    private static final String INTENT_ACTION = "com.aalto.precious.sensing.PERIODIC_UPDATE_TASK";
+    private static final String INTENT_ACTION = "com.aalto.precious.sensing.POLLING_SERVICE_UPDATE";
+    private static final int SECOND = 1000;
+    //private Context context;
 
     public PeriodicBroadcastReceiver() {
     }
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        // if (intent.getAction().equals(INTENT_ACTION)) {
 
-        if (intent.getAction().equals(INTENT_ACTION)) {
+        Log.i(TAG, intent.getAction());
             Log.i(TAG, "Alarm Fired \nRestartiing PeriodicUpdate");
             Intent pollingServiceIntent = new Intent(context, BackgroundService.class);
             context.startService(pollingServiceIntent);
-        }
+        // }
     }
 
 
     public void reset(Context context) {
         Log.i(TAG, "BroadcastRecevier Reset Called");
-        Intent alarmIntent = new Intent(context, PeriodicBroadcastReceiver.class);
-        alarmIntent.setAction(INTENT_ACTION);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+        Intent broadcastIntent = new Intent(context, PeriodicBroadcastReceiver.class);
+        broadcastIntent.setAction(INTENT_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if (pendingIntent == null)
+            Log.i(TAG, "PendingIntent Null");
         AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         manager.set(AlarmManager.ELAPSED_REALTIME,
-                SystemClock.elapsedRealtime() + (1000 * 5), pendingIntent);
+                SystemClock.elapsedRealtime() + (20 * SECOND), pendingIntent);
+        Log.i(TAG, "AlarmManager Set");
     }
 
 }

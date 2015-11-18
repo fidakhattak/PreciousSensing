@@ -37,28 +37,28 @@ public class SensorReadTask extends AsyncTask<Uri, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        this.updateCompleted.OnUpdateComplete(station);
+        this.updateCompleted.sensorReadUpdate(station);
     }
 
     private void SensorRead() throws IOException {
         boolean success = communicator.connect(uri);
         if (!success) {
-            System.err.println("Error connecting to host");
+            Log.e(TAG, "Error connecting to host");
             return;
         }
         success = communicator.communicate();
         if (!success) {
-            System.err.println("Error communicating to the host");
+            Log.e(TAG, "Error communicating to the host");
             return;
         }
         success = communicator.parse();
         if (!success) {
-            System.err.println("Error Parsing the response");
+            Log.e(TAG, "Error Parsing the response");
             return;
         }
         success = communicator.closeConnection();
         if (!success)
-            System.err.println("Error Closing the connecting");
+            Log.e(TAG, "Error Closing the connecting");
 
         station = this.communicator.getWeatherStation();
         if (station == null)

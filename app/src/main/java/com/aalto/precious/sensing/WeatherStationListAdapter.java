@@ -30,7 +30,6 @@ public class WeatherStationListAdapter extends ArrayAdapter {
         // Lookup view for data population;
         TextView nodeName = (TextView) convertView.findViewById(R.id.textViewNode);
         TextView nodeStatus = (TextView) convertView.findViewById(R.id.textViewStatus);
-
         // Populate the data into the template view using the data object
         nodeName.setText(item.getLocation());
         nodeStatus.setText(item.getUri());

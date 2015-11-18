@@ -85,11 +85,11 @@ public class Sensor {
             this.unit = "°C";
             //update later
             this.progressBarValue = (int) sensorValue;
-            this.stringSensorValue = Float.toString(sensorValue);
+            this.stringSensorValue = String.format("%.2f", sensorValue);
         } else if (name.equalsIgnoreCase("humidity")) {
             this.unit = " %";
             this.progressBarValue = (int) sensorValue;
-            this.stringSensorValue = Float.toString(sensorValue);
+            this.stringSensorValue = String.format("%.2f", sensorValue);
         } else if (name.equalsIgnoreCase("light")) {
             this.unit = "";
             this.progressBarValue = (int) sensorValue / 5;
@@ -106,9 +106,9 @@ public class Sensor {
             if (this.sensorValue > 900) {
                 this.stringSensorValue = "Clean";
             } else if (this.sensorValue < 850 && this.sensorValue > 500) {
-                this.stringSensorValue = "Low Polution";
+                this.stringSensorValue = "Low Pollution";
             } else if (this.sensorValue < 500) {
-                this.stringSensorValue = "High Polution";
+                this.stringSensorValue = "High Pollution";
             }
         }
     }

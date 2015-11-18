@@ -34,7 +34,6 @@ public class UpnpRegistryListener extends DefaultRegistryListener {
 
     @Override
     public void remoteDeviceAdded(Registry registry, RemoteDevice device) {
-
         deviceAdded(device);
     }
 
@@ -50,7 +49,6 @@ public class UpnpRegistryListener extends DefaultRegistryListener {
 
     @Override
     public void localDeviceRemoved(Registry registry, LocalDevice device) {
-
         deviceRemoved(device);
     }
 
@@ -66,7 +64,6 @@ public class UpnpRegistryListener extends DefaultRegistryListener {
 
     @Override
     public void remoteDeviceDiscoveryFailed(Registry registry, final RemoteDevice device, final Exception ex) {
-
         Log.i(TAG, "Device Discovery Failed");
     }
 
